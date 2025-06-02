@@ -1,4 +1,5 @@
 from typing import Dict
+from pytest import raises
 from .calculator_one import CalculatorOne
 
 
@@ -12,8 +13,6 @@ def test_calculate():
     calculator_one = CalculatorOne()
 
     response = calculator_one.calculate(mock_request)
-    print()
-    print(response)
 
     assert "data" in response
     assert "Calculator" in response["data"]
@@ -21,3 +20,13 @@ def test_calculate():
 
     assert response["data"]["result"] == 14.25
     assert response["data"]["Calculator"] == 1
+
+
+def test_calculate_with_body_error():
+    mock_request = MockRequest(body={"something": 1})
+    calculator_one = CalculatorOne()
+
+    with raises(Exception) as esceptionInfo:
+        calculator_one.calculate(mock_request)
+
+    assert str(esceptionInfo.value) == "Body format is not correct!"
