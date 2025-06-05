@@ -1,6 +1,7 @@
 from typing import Dict
 from pytest import raises
 from .calculator_two import CalculatorTwo
+from src.drivers.numpy_handler import NumpyHandler
 
 
 class MockRequest:
@@ -10,8 +11,9 @@ class MockRequest:
 
 def test_calculate():
     mock_request = MockRequest({"numbers": [2.12, 4.62, 1.32]})
-    calculator_two = CalculatorTwo()
 
+    driver = NumpyHandler()
+    calculator_two = CalculatorTwo(driver)
     formatted_response = calculator_two.calculate(mock_request)
     print()
     print(formatted_response)

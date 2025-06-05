@@ -1,9 +1,12 @@
 from typing import Dict, List
 from flask import request as FlaskRequest
-from src.drivers.numpy_handler import NumpyHandler
+from src.drivers.interfaces.driver_handler_interface import DriverHandlerInterface
 
 
 class CalculatorTwo:
+    def __init__(self, driver_handler: DriverHandlerInterface) -> None:
+        self.__driver_handler = driver_handler
+
     """
     * N numbers are sent;
     * Process 1: All N numbers are multiplied by 11 and raised to the power 0.95;
@@ -30,10 +33,9 @@ class CalculatorTwo:
         return data
 
     def __process_data(self, data: List[float]) -> float:
-        numpy_handler = NumpyHandler()
         first_process_result = [(num * 11) ** 0.96 for num in data]
 
-        result = numpy_handler.standard_deviation(first_process_result)
+        result = self.__driver_handler.standard_deviation(first_process_result)
 
         return 1 / result
 
