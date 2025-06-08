@@ -1,14 +1,14 @@
 from flask import Blueprint, jsonify, request
-from src.calculators.calculator_one import CalculatorOne
-from src.calculators.calculator_two import CalculatorTwo
-from src.drivers.numpy_handler import NumpyHandler
+from src.main.factories.calculator_one_factory import calculator_one_factory
+from src.main.factories.calculator_two_factory import calculator_two_factory
+
 
 calculator_routes_blueprint = Blueprint("calculator_routes", __name__)
 
 
 @calculator_routes_blueprint.route("/calculator/1", methods=["POST"])
 def calculator_one():
-    calculator = CalculatorOne()
+    calculator = calculator_one_factory()
     response = calculator.calculate(request)
 
     return jsonify(response), 200
@@ -16,8 +16,7 @@ def calculator_one():
 
 @calculator_routes_blueprint.route("/calculator/2", methods=["POST"])
 def calculator_two():
-    numpy_handler = NumpyHandler()
-    calculator = CalculatorTwo(numpy_handler)
+    calculator = calculator_two_factory()
     response = calculator.calculate(request)
 
     return jsonify(response), 200
