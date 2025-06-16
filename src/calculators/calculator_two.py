@@ -1,6 +1,7 @@
 from typing import Dict, List
 from flask import request as FlaskRequest
 from src.drivers.interfaces.driver_handler_interface import DriverHandlerInterface
+from src.errors.http_unprocessable_entity import HttpUnprocessableEntityError
 
 
 class CalculatorTwo:
@@ -27,7 +28,7 @@ class CalculatorTwo:
 
     def __validate_body(self, body: Dict) -> List[float]:
         if "numbers" not in body:
-            raise Exception("Body format is not correct!")
+            raise HttpUnprocessableEntityError("Body format is not correct!")
 
         data = body["numbers"]
         return data

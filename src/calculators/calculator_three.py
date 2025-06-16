@@ -1,6 +1,8 @@
 from typing import Dict, List
 from flask import request as FlaskRequest
 from src.drivers.interfaces.driver_handler_interface import DriverHandlerInterface
+from src.errors.http_bad_request import HttpBadRequestError
+from src.errors.http_unprocessable_entity import HttpUnprocessableEntityError
 
 
 class CalculatorThree:
@@ -28,7 +30,7 @@ class CalculatorThree:
 
     def __validate_body(self, body: Dict) -> List[float]:
         if "numbers" not in body:
-            raise Exception("Body format is not correct!")
+            raise HttpUnprocessableEntityError("Body format is not correct!")
 
         data = body["numbers"]
         return data
@@ -48,7 +50,9 @@ class CalculatorThree:
 
     def __verify_result(self, variance: float, multiplication: float) -> None:
         if variance < multiplication:
-            raise Exception("Process failure: Variance lesser than Multiplication")
+            raise HttpBadRequestError(
+                "Process failure: Variance lesser than Multiplication"
+            )
 
     def __format_response(self, variance: float) -> Dict:
         return {"data": {"Calculator": 3, "result": variance, "success": True}}
